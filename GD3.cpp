@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include "SPI.h"
+#include "SdFat.h"
 #if !defined(__SAM3X8E__)
 #include "EEPROM.h"
 #endif

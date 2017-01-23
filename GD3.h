@@ -14,6 +14,7 @@
 #endif
 
 #include "Arduino.h"
+#include "SdFat.h"
 #include <stdarg.h>
 
 #define RGB(r, g, b)    ((uint32_t)((((r) & 0xffL) << 16) | (((g) & 0xffL) << 8) | ((b) & 0xffL)))

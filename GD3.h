@@ -594,6 +594,8 @@ public:
 
   void dumpscreen(void);
   byte load(const char *filename, void (*progress)(long, long) = NULL);
+  //RndMnkIII: método loadSDIO para carga de assets desde lector SDIO tarjetas Teensy 3.5/3.6
+  byte loadSDIO(File& archivo, void (*progress)(long, long));
   void safeload(const char *filename);
   void alert(const char *message);
 

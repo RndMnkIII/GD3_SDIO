@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Project Name="GD3" Version="10.0.0" InternalType="">
+  <VirtualDirectory Name="4.Demos">
+    <VirtualDirectory Name="GD3_Analog_gauge">
+      <File Name="4.Demos/GD3_Analog_gauge/Icons2.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="GD3_cobra">
+      <File Name="4.Demos/GD3_cobra/cobra_assets.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="GD3_FT81X_Fish_tank">
+      <File Name="4.Demos/GD3_FT81X_Fish_tank/pez1.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="GD3_Lineal_gauge">
+      <File Name="4.Demos/GD3_Lineal_gauge/V.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="GD3_logo">
+      <File Name="4.Demos/GD3_logo/logogd3.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="GD3_Logo_2">
+      <File Name="4.Demos/GD3_Logo_2/ALogo1.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="GD3_Menu">
+      <File Name="4.Demos/GD3_Menu/Icons2.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="GD3_MSGEQ7_Spectrum_analyzer">
+      <File Name="4.Demos/GD3_MSGEQ7_Spectrum_analyzer/spect.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="GD3_Nixie_numbers">
+      <File Name="4.Demos/GD3_Nixie_numbers/nixie1.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="GD3_Nixie_numbers_DS3231">
+      <File Name="4.Demos/GD3_Nixie_numbers_DS3231/nixie1.h"/>
+    </VirtualDirectory>
+  </VirtualDirectory>
+  <VirtualDirectory Name="3.Expert">
+    <VirtualDirectory Name="FT81X_Desplazamiento_H">
+      <File Name="3.Expert/FT81X_Desplazamiento_H/Dark1.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="FT81X_Rotacion">
+      <File Name="3.Expert/FT81X_Rotacion/Icons2.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="FT81X_Test_1">
+      <File Name="3.Expert/FT81X_Test_1/Icons2.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="FT81X_Test_2">
+      <File Name="3.Expert/FT81X_Test_2/Dark1.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="FT81X_Test_3">
+      <File Name="3.Expert/FT81X_Test_3/Icons2.h"/>
+    </VirtualDirectory>
+  </VirtualDirectory>
+  <VirtualDirectory Name="2.Assets">
+    <VirtualDirectory Name="FT8XX_iconos">
+      <File Name="2.Assets/FT8XX_iconos/Icons2.h"/>
+    </VirtualDirectory>
+  </VirtualDirectory>
+  <Description/>
+  <Dependencies/>
+  <Settings Type="Executable">
+    <GlobalSettings>
+      <Compiler Options="" C_Options="" Assembler="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+    <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g -Wall" C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="-O0" Required="yes">
+        <LibraryPath Value="."/>
+        <LibraryPath Value="Debug"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="./Debug" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
+      <Environment EnvVarSetName="&lt;Use Workspace Settings&gt;" DbgSetName="&lt;Use Global Settings&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+  </Settings>
+  <VirtualDirectory Name="transports">
+    <File Name="transports/dump.h"/>
+    <File Name="transports/serial.h"/>
+    <File Name="transports/spidev.h"/>
+    <File Name="transports/wiring.h"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="GD3">
+    <File Name="GD3.cpp"/>
+    <File Name="GD3.h"/>
+  </VirtualDirectory>
+</CodeLite_Project>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Session Name="C:\Users\javier\Documents\Arduino\libraries\GD3\GD3.workspace">
+  <int Value="2" Name="m_selectedTab"/>
+  <wxString Value="C:\Users\javier\Documents\Arduino\libraries\GD3\GD3.workspace" Name="m_workspaceName"/>
+  <TabInfoArray Name="TabInfoArray">
+    <TabInfo>
+      <wxString Value="C:\Users\javier\Documents\Arduino\libraries\GD3\GD3.h" Name="FileName"/>
+      <int Value="527" Name="FirstVisibleLine"/>
+      <int Value="540" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="C:\Users\javier\Documents\Arduino\libraries\GD3\GD3.cpp" Name="FileName"/>
+      <int Value="617" Name="FirstVisibleLine"/>
+      <int Value="632" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="C:\Users\javier\Documents\Arduino\libraries\GD3\transports\wiring.h" Name="FileName"/>
+      <int Value="93" Name="FirstVisibleLine"/>
+      <int Value="86" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+  </TabInfoArray>
+  <SerializedObject Name="m_breakpoints">
+    <long Value="0" Name="Count"/>
+  </SerializedObject>
+</Session>

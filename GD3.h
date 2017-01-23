@@ -631,7 +631,7 @@ public:
 
     dos83(dosname, filename);
     do {
-      GD.SD.rdn((byte*)&de, GD.SD.o_root + i * 32, sizeof(de));
+      GD.SD_CARD.rdn((byte*)&de, GD.SD_CARD.o_root + i * 32, sizeof(de));
       // Serial.println(de.name);
       if (0 == memcmp(de.name, dosname, 11)) {
         begin(de);
@@ -646,7 +646,7 @@ public:
     nseq = 0;
     size = de.size;
     cluster0 = de.cluster;
-    if (GD.SD.type == FAT32)
+    if (GD.SD_CARD.type == FAT32)
       cluster0 |= ((long)de.cluster_hi << 16);
     rewind();
   }
@@ -658,10 +658,10 @@ public:
   }
 
   void nextcluster() {
-    if (GD.SD.type == FAT16)
-      cluster = GD.SD.rd2(GD.SD.o_fat + 2 * cluster);
+    if (GD.SD_CARD.type == FAT16)
+      cluster = GD.SD_CARD.rd2(GD.SD_CARD.o_fat + 2 * cluster);
     else
-      cluster = GD.SD.rd4(GD.SD.o_fat + 4 * cluster);
+      cluster = GD.SD_CARD.rd4(GD.SD_CARD.o_fat + 4 * cluster);
 #if VERBOSE
     Serial.print("nextcluster=");
     Serial.println(cluster, DEC);
@@ -695,7 +695,7 @@ public:
     while (!(SPSR & _BV(SPIF))) ;
     SPI.transfer(0xff);
 #endif
-    GD.SD.desel();
+    GD.SD_CARD.desel();
   }
 
   void nextcluster2(byte *dst) {
@@ -704,8 +704,8 @@ public:
       cluster++;
       return;
     }
-    uint32_t off = GD.SD.o_fat + 4 * cluster;
-    GD.SD.cmd17(off & ~511L);
+    uint32_t off = GD.SD_CARD.o_fat + 4 * cluster;
+    GD.SD_CARD.cmd17(off & ~511L);
     fetch512(dst);
     int i = off & 511;
     cluster = *(uint32_t*)&dst[i];
@@ -719,11 +719,11 @@ public:
 
   void skipcluster() {
     nextcluster();
-    offset += GD.SD.cluster_size;
+    offset += GD.SD_CARD.cluster_size;
   }
 
   void skipsector() {
-    if (sector == GD.SD.sectors_per_cluster) {
+    if (sector == GD.SD_CARD.sectors_per_cluster) {
       sector = 0;
       nextcluster();
     }
@@ -742,30 +742,30 @@ public:
     if (o < offset)
       rewind();
     while (offset < o) {
-      if ((sector == GD.SD.sectors_per_cluster) && ((o - offset) > (long)GD.SD.cluster_size)) {
+      if ((sector == GD.SD_CARD.sectors_per_cluster) && ((o - offset) > (long)GD.SD_CARD.cluster_size)) {
         uint32_t o;
-        if (GD.SD.type == FAT16)
-          o = (GD.SD.o_fat + 2 * cluster) & ~511;
+        if (GD.SD_CARD.type == FAT16)
+          o = (GD.SD_CARD.o_fat + 2 * cluster) & ~511;
         else
-          o = (GD.SD.o_fat + 4 * cluster) & ~511;
+          o = (GD.SD_CARD.o_fat + 4 * cluster) & ~511;
         if (o != co) {
-          GD.SD.rdn(buf, o, 512);
+          GD.SD_CARD.rdn(buf, o, 512);
           co = o;
         }
         cluster = fat32[cluster & 127];
-        offset += GD.SD.cluster_size;
+        offset += GD.SD_CARD.cluster_size;
       } else
         skipsector();
     }
   }
 
   void readsector(byte *dst) {
-    if (sector == GD.SD.sectors_per_cluster) {
+    if (sector == GD.SD_CARD.sectors_per_cluster) {
       sector = 0;
       nextcluster2(dst);
     }
-    uint32_t off = GD.SD.o_data + ((long)GD.SD.cluster_size * cluster) + (512L * sector);
-    GD.SD.cmd17(off & ~511L);
+    uint32_t off = GD.SD_CARD.o_data + ((long)GD.SD_CARD.cluster_size * cluster) + (512L * sector);
+    GD.SD_CARD.cmd17(off & ~511L);
     sector++;
     offset += 512;
     fetch512(dst);

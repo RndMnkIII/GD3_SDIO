@@ -1503,6 +1503,19 @@ void GDClass::safeload(const char *filename)
   }
 }
 
+//RndMnkIII: método safeloadSDIO para carga de assets desde lector SDIO tarjetas Teensy 3.5/3.6
+void GDClass::safeloadSDIO(File& archivo)
+{
+  if (!loadSDIO(archivo)) {
+    copy(__bsod, sizeof(__bsod));
+    copy(__bsod_badfile, sizeof(__bsod_badfile));
+    cmd_text(240, 190, 29, OPT_CENTER, archivo.name());
+    swap();
+    for (;;)
+      ;
+  }
+}
+
 #define REG_SCREENSHOT_EN    (ft8xx_model ? 0x302010UL : 0x102410UL) // Set to enable screenshot mode
 #define REG_SCREENSHOT_Y     (ft8xx_model ? 0x302014UL : 0x102414UL) // Y line register
 #define REG_SCREENSHOT_START (ft8xx_model ? 0x302018UL : 0x102418UL) // Screenshot start trigger

@@ -1418,6 +1418,7 @@ byte GDClass::loadSDIO(File& archivo, void (*progress)(long, long))
 
   int offset=0;
   const uint16_t TAM_BUFFER = 512; //8192 si se aumenta de tamaño se mejora en eficiencia de lectura 
+  GD.__end();
   
   if (archivo) {
     byte buf[TAM_BUFFER];
@@ -1433,6 +1434,7 @@ byte GDClass::loadSDIO(File& archivo, void (*progress)(long, long))
       if (progress)
         (*progress)(offset, tamArchivo);
       GD.copyram(buf, n);
+      GDTR.stop();
     }
     GD.resume();
     return 1;

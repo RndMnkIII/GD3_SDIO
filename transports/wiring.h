@@ -24,8 +24,10 @@ public:
 
     SPI.begin();
 #ifdef TEENSYDUINO
+    #warning "definida TEENSYDUINO"
     SPI.beginTransaction(SPISettings(3000000, MSBFIRST, SPI_MODE0));
 #else
+     #warning "nO definida TEENSYDUINO"
 #ifndef __DUE__
     SPI.setClockDivider(SPI_CLOCK_DIV2);
     SPSR = (1 << SPI2X);

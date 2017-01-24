@@ -95,7 +95,8 @@ public:
   }
 };
 static class ASPI_t ASPI;
-#define SPI ASPI
+//RndMnkIII: usar spi
+//#define SPI ASPI
 
 #endif
 
@@ -625,6 +626,7 @@ private:
 
 extern GDClass GD;
 extern byte ft8xx_model;
+extern SPISettings settingsT36;
 
 #if SDCARD
 class Reader {

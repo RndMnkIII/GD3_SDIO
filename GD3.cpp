@@ -60,7 +60,7 @@ byte ft8xx_model;
 #if defined(ARDUINO)
 #include "transports/wiring.h"
 #endif
-
+SPISettings settingsT36(30000000, MSBFIRST, SPI_MODE0); 
 static GDTransport GDTR;
 
 GDClass GD;
@@ -1417,7 +1417,8 @@ byte GDClass::loadSDIO(File& archivo, void (*progress)(long, long))
 {
 
   int offset=0;
-  const uint16_t TAM_BUFFER = 512; //8192 si se aumenta de tamaño se mejora en eficiencia de lectura 
+  const uint16_t TAM_BUFFER = 2048; //8192 si se aumenta de tamaño se mejora en eficiencia de lectura 
+  SPI.beginTransaction(settingsT36);
   GD.__end();
   
   if (archivo) {
@@ -1437,9 +1438,11 @@ byte GDClass::loadSDIO(File& archivo, void (*progress)(long, long))
       GDTR.stop();
     }
     GD.resume();
+    SPI.endTransaction();
     return 1;
   }
   GD.resume();
+  SPI.endTransaction();
   return 0;
 }
 

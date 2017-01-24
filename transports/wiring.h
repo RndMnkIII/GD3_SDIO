@@ -1,10 +1,14 @@
+
+#include <SPI.h>
 #ifndef CS
 #define CS 10
 #endif
 
+
 class GDTransport {
 private:
   byte model;
+  
 public:
   void ios() {
     pinMode(CS, OUTPUT);
@@ -24,10 +28,10 @@ public:
 
     SPI.begin();
 #ifdef TEENSYDUINO
-    #warning "definida TEENSYDUINO"
-    SPI.beginTransaction(SPISettings(3000000, MSBFIRST, SPI_MODE0));
+    #warning "RndMnkIII: definida TEENSYDUINO"
+    SPI.beginTransaction(SPISettings(400000, MSBFIRST, SPI_MODE0));
 #else
-     #warning "nO definida TEENSYDUINO"
+     #warning "RndMnkIII: NO definida TEENSYDUINO"
 #ifndef __DUE__
     SPI.setClockDivider(SPI_CLOCK_DIV2);
     SPSR = (1 << SPI2X);
@@ -50,9 +54,11 @@ public:
 
     // Test point: saturate SPI
     while (0) {
+      SPI.beginTransaction(settingsT36);
       digitalWrite(CS, LOW);
       SPI.transfer(0x55);
       digitalWrite(CS, HIGH);
+      SPI.endTransaction();
     }
 
 #if 0
@@ -62,6 +68,7 @@ public:
       delay(120);
       hostcmd(0x68);
       delay(120);
+      SPI.beginTransaction(settingsT36);
       digitalWrite(CS, LOW);
       Serial.println(SPI.transfer(0x10), HEX);
       Serial.println(SPI.transfer(0x24), HEX);
@@ -72,6 +79,7 @@ public:
       Serial.println();
 
       digitalWrite(CS, HIGH);
+      SPI.endTransaction();
       delay(2000);
     }
 #endif
@@ -97,10 +105,12 @@ public:
       uint8_t b[4];
     };
     c = x;
+   
     SPI.transfer(b[0]);
     SPI.transfer(b[1]);
     SPI.transfer(b[2]);
     SPI.transfer(b[3]);
+    
   }
   void cmdbyte(byte x) {
     if (freespace == 0) {

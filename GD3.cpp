@@ -177,6 +177,11 @@ public:
   }
 };
 
+
+//RndMnkIII
+const uint16_t GDClass::TAM_BUFFER=2048;
+byte GDClass::buf[TAM_BUFFER];
+
 void GDClass::flush(void)
 {
   GDTR.flush();
@@ -1417,12 +1422,11 @@ byte GDClass::loadSDIO(File& archivo, void (*progress)(long, long))
 {
 
   int offset=0;
-  const uint16_t TAM_BUFFER = 2048; //8192 si se aumenta de tamaño se mejora en eficiencia de lectura 
   SPI.beginTransaction(settingsT36);
   GD.__end();
   
   if (archivo) {
-    byte buf[TAM_BUFFER];
+    
 	int tamArchivo=archivo.available();
 	
     while (offset < tamArchivo) {

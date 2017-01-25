@@ -29,7 +29,7 @@ public:
     SPI.begin();
 #ifdef TEENSYDUINO
     #warning "RndMnkIII: definida TEENSYDUINO"
-    SPI.beginTransaction(SPISettings(400000, MSBFIRST, SPI_MODE0));
+    SPI.beginTransaction(settingsT36);
 #else
      #warning "RndMnkIII: NO definida TEENSYDUINO"
 #ifndef __DUE__

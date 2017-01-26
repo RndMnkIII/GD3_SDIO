@@ -428,7 +428,8 @@ public:
 class GDClass {
 //RndMnkIII
 private:
-    static const uint16_t TAM_BUFFER; //8192 si se aumenta de tamaño se mejora en eficiencia de lectura 
+    static const uint16_t TAM_BUFFER_SD; //8192 si se aumenta de tamaño se mejora en eficiencia de lectura 
+    static const uint16_t TAM_BUFFER_FT;
     static byte buf[];
     
 public:

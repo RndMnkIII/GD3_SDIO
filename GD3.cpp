@@ -179,8 +179,9 @@ public:
 
 
 //RndMnkIII
-const uint16_t GDClass::TAM_BUFFER=2048;
-byte GDClass::buf[TAM_BUFFER];
+const uint16_t GDClass::TAM_BUFFER_SD=32768;
+const uint16_t GDClass::TAM_BUFFER_FT=2048;
+byte GDClass::buf[TAM_BUFFER_SD];
 
 void GDClass::flush(void)
 {
@@ -1422,25 +1423,41 @@ byte GDClass::loadSDIO(File& archivo, void (*progress)(long, long))
 {
 
   int offset=0;
+  int offsetFT;
+  int bytesDisponibles;
+  int wbn;
   SPI.beginTransaction(settingsT36);
   GD.__end();
   
   if (archivo) {
     
 	int tamArchivo=archivo.available();
-	
-    while (offset < tamArchivo) {
-      uint16_t n = ( (archivo.available() > TAM_BUFFER) ? TAM_BUFFER : archivo.available());
-	  archivo.read(buf,n);
-	  offset+=n;
-      n = (n + 3) & ~3;   // force 32-bit alignment
+    
+    while( offset < tamArchivo)
+    {
+        uint16_t m = ( (archivo.available() > TAM_BUFFER_SD) ? TAM_BUFFER_SD : archivo.available());
+        archivo.read(buf,m);
+        
+        offsetFT=0;
+        bytesDisponibles=m;
+        while (offsetFT < m) 
+        {
+              uint16_t n = ( (bytesDisponibles > TAM_BUFFER_FT) ? TAM_BUFFER_FT : bytesDisponibles);
+             
+              wbn = (n + 3) & ~3;   // force 32-bit alignment
 
-      GD.resume();
-      if (progress)
-        (*progress)(offset, tamArchivo);
-      GD.copyram(buf, n);
-      GDTR.stop();
-    }
+              GD.resume();
+              if (progress)
+                (*progress)((offset+offsetFT), tamArchivo);
+              GD.copyram((buf+offsetFT), wbn);
+              
+              offsetFT+=n;
+              bytesDisponibles-=n;
+              GDTR.stop();
+        }
+        offset+=m;         
+    }	
+            
     GD.resume();
     SPI.endTransaction();
     return 1;

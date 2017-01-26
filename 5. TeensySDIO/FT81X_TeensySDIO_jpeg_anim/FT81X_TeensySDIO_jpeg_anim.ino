@@ -72,7 +72,7 @@ void loop(){
       fcount++;
       frms++;
   }
-  if (frms > FPS){
+  if (frms == FPS){
     frms=0;
     secs++;
   }

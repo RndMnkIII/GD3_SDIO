@@ -431,6 +431,7 @@ private:
     static const uint16_t TAM_BUFFER_SD; //8192 si se aumenta de tamaño se mejora en eficiencia de lectura 
     static const uint16_t TAM_BUFFER_FT;
     static byte buf[];
+    static byte FTbuf[];
     
 public:
   int w, h;
@@ -1079,6 +1080,71 @@ class Poly {
       GD.Begin(LINE_STRIP);
       perim();
     }
+};
+class StreamerSDIO {
+public:
+  void begin(const char *rawsamples,
+             uint16_t freq = 44100,
+             byte format = ADPCM_SAMPLES,
+             uint32_t _base = (0x40000UL - 8192), uint16_t size = 8192) {
+    GD.__end();
+    //r.openfile(rawsamples);
+	//RndMnkIII
+	archivo.open(rawsamples, O_RDONLY);
+    GD.resume();
+
+    base = _base;
+    mask = size - 1;
+    wp = 0;
+
+    for (byte i = 10; i; i--)
+      feed();
+
+    GD.sample(base, size, freq, format, 1);
+  }
+  int feed() {
+    uint16_t rp = GD.rd32(REG_PLAYBACK_READPTR) - base;
+    uint16_t freespace = mask & ((rp - 1) - wp);
+    if (freespace >= 512) {
+      // REPORT(base);
+      // REPORT(rp);
+      // REPORT(wp);
+      // REPORT(freespace);
+      // Serial.println();
+      
+      // uint16_t n = min(512, r.size - r.offset);
+      // n = (n + 3) & ~3;   // force 32-bit alignment
+      GD.__end();
+	  //RndMnkIII
+      //r.readsector(buf);
+      archivo.read(buf,512);
+	  GD.resume();
+      GD.cmd_memwrite(base + wp, 512);
+      GD.copyram(buf, 512);
+      wp = (wp + 512) & mask;
+    }
+	//RndMnkIII
+    //return r.offset < r.size;
+	return archivo.position() - archivo.size();
+  }
+  void progress(uint16_t &val, uint16_t &range) {
+    //RndMnkIII
+	uint32_t m = archivo.size();
+    uint32_t p = min(archivo.position(), m);
+    while (m > 0x10000) {
+      m >>= 1;
+      p >>= 1;
+    }
+    val = p;
+    range = m;
+  }
+private:
+  //Reader r;
+  File archivo;
+  byte buf[512];
+  uint32_t base;
+  uint16_t mask;
+  uint16_t wp;
 };
 
 #if SDCARD

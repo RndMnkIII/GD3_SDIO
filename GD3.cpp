@@ -20,6 +20,9 @@
 #define STORAGE             1   // Want SD storage?
 #define CALIBRATION         1   // Want touchscreen?
 
+//RndMnkIII:
+//#define DUMMY_GDCOPYRAM
+
 // EVITA_0 has no storage or calibration
 #if (BOARD == BOARD_EVITA_0)
 // #undef STORAGE
@@ -182,6 +185,7 @@ public:
 const uint16_t GDClass::TAM_BUFFER_SD=32768;
 const uint16_t GDClass::TAM_BUFFER_FT=2048;
 byte GDClass::buf[TAM_BUFFER_SD];
+byte GDClass::FTbuf[TAM_BUFFER_FT];
 
 void GDClass::flush(void)
 {
@@ -1449,8 +1453,11 @@ byte GDClass::loadSDIO(File& archivo, void (*progress)(long, long))
               GD.resume();
               if (progress)
                 (*progress)((offset+offsetFT), tamArchivo);
-              GD.copyram((buf+offsetFT), wbn);
-              
+#ifdef DUMMY_GDCOPYRAM
+                memcpy (FTbuf, buf+offsetFT, wbn );
+#else
+                GD.copyram((buf+offsetFT), wbn);
+#endif              
               offsetFT+=n;
               bytesDisponibles-=n;
               GDTR.stop();

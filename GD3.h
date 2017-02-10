@@ -14,7 +14,9 @@
 #endif
 
 #include "Arduino.h"
-#include "SdFat.h"
+//#include "SdFat.h"
+#include <SPI.h>
+#include <SD.h>
 #include <stdarg.h>
 
 #define RGB(r, g, b)    ((uint32_t)((((r) & 0xffL) << 16) | (((g) & 0xffL) << 8) | ((b) & 0xffL)))
@@ -634,6 +636,7 @@ private:
 extern GDClass GD;
 extern byte ft8xx_model;
 extern SPISettings settingsT36;
+extern SPISettings setInicio;
 
 #if SDCARD
 class Reader {
@@ -954,6 +957,10 @@ typedef struct {
 #define REG_FREQUENCY         (ft8xx_model ? 0x30200cUL : 0x10240cUL)
 #define REG_GPIO              (ft8xx_model ? 0x302094UL : 0x102490UL)
 #define REG_GPIO_DIR          (ft8xx_model ? 0x302090UL : 0x10248cUL)
+//Start:RndMnkIII
+#define REG_GPIOX             0X30209cUL
+#define REG_GPIOX_DIR         0X302098UL
+//End:RndMnkIII
 #define REG_HCYCLE            (ft8xx_model ? 0x30202cUL : 0x102428UL)
 #define REG_HOFFSET           (ft8xx_model ? 0x302030UL : 0x10242cUL)
 #define REG_HSIZE             (ft8xx_model ? 0x302034UL : 0x102430UL)
@@ -1086,11 +1093,16 @@ public:
   void begin(const char *rawsamples,
              uint16_t freq = 44100,
              byte format = ADPCM_SAMPLES,
-             uint32_t _base = (0x40000UL - 8192), uint16_t size = 8192) {
+             //RndMnkIII
+             //uint32_t _base = (0x40000UL - 8192), uint16_t size = 8192) {
+             //Importante base:limite superior memoria de video (1mb ft81x, 256kb ft80x) - tamaño del buffer
+             uint32_t _base = (0x100000UL - 8192), uint16_t size = 8192) {    
     GD.__end();
     //r.openfile(rawsamples);
 	//RndMnkIII
-	archivo.open(rawsamples, O_RDONLY);
+	//archivo.open(rawsamples, O_RDONLY);
+    //por compatibilidad con la audio shield ahora se utiliza la libreria SD no la SdFat
+    archivo = SD.open(rawsamples, FILE_READ);
     GD.resume();
 
     base = _base;
@@ -1153,7 +1165,10 @@ public:
   void begin(const char *rawsamples,
              uint16_t freq = 44100,
              byte format = ADPCM_SAMPLES,
-             uint32_t _base = (0x40000UL - 8192), uint16_t size = 8192) {
+             //RndMnkIII
+             //uint32_t _base = (0x40000UL - 8192), uint16_t size = 8192) {
+             //Importante base:limite superior memoria de video (1mb ft81x, 256kb ft80x) - tamaño del buffer
+             uint32_t _base = (0x100000UL - 8192), uint16_t size = 8192) {    
     GD.__end();
     r.openfile(rawsamples);
     GD.resume();

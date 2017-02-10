@@ -4,10 +4,11 @@
 #define CS 10
 #endif
 
-
+ 
 class GDTransport {
 private:
   byte model;
+  
   
 public:
   void ios() {
@@ -29,7 +30,7 @@ public:
     SPI.begin();
 #ifdef TEENSYDUINO
     #warning "RndMnkIII: definida TEENSYDUINO"
-    //SPI.beginTransaction(settingsT36);
+    //SPI.beginTransaction(setInicio);
 #else
      #warning "RndMnkIII: NO definida TEENSYDUINO"
 #ifndef __DUE__
@@ -54,11 +55,11 @@ public:
 
     // Test point: saturate SPI
     while (0) {
-      SPI.beginTransaction(settingsT36);
+      
       digitalWrite(CS, LOW);
       SPI.transfer(0x55);
       digitalWrite(CS, HIGH);
-      SPI.endTransaction();
+      
     }
 
 #if 0
@@ -68,7 +69,7 @@ public:
       delay(120);
       hostcmd(0x68);
       delay(120);
-      SPI.beginTransaction(settingsT36);
+      
       digitalWrite(CS, LOW);
       Serial.println(SPI.transfer(0x10), HEX);
       Serial.println(SPI.transfer(0x24), HEX);
@@ -79,7 +80,7 @@ public:
       Serial.println();
 
       digitalWrite(CS, HIGH);
-      SPI.endTransaction();
+      
       delay(2000);
     }
 #endif
@@ -105,12 +106,12 @@ public:
       uint8_t b[4];
     };
     c = x;
-    SPI.beginTransaction(settingsT36);
+    
     SPI.transfer(b[0]);
     SPI.transfer(b[1]);
     SPI.transfer(b[2]);
     SPI.transfer(b[3]);
-    SPI.endTransaction();
+    
   }
   void cmdbyte(byte x) {
     if (freespace == 0) {
@@ -118,12 +119,12 @@ public:
     }
     wp++;
     freespace--;
-    SPI.beginTransaction(settingsT36);
+    
     SPI.transfer(x);
-    SPI.endTransaction();
+    
   }
   void cmd_n(byte *s, uint16_t n) {
-     SPI.beginTransaction(settingsT36);  
+       
     if (freespace < n) {
       getfree(n);
     }
@@ -144,7 +145,7 @@ public:
     }
     while (n--)
       SPI.transfer(*s++);
-    SPI.endTransaction();
+    
   }
 
   void flush() {
@@ -168,30 +169,30 @@ public:
 
   byte rd(uint32_t addr)
   {
-      SPI.beginTransaction(settingsT36);
+      
     __end(); // stop streaming
     __start(addr);
     SPI.transfer(0);  // dummy
     byte r = SPI.transfer(0);
     stream();
-    SPI.endTransaction();
+    
     return r;
   }
 
   void wr(uint32_t addr, byte v)
   {
-    SPI.beginTransaction(settingsT36);
+    
   
     __end(); // stop streaming
     __wstart(addr);
     SPI.transfer(v);
     stream();
-    SPI.endTransaction();
+    
   }
 
   uint16_t rd16(uint32_t addr)
   {
-    SPI.beginTransaction(settingsT36);
+    
   
     uint16_t r = 0;
     __end(); // stop streaming
@@ -201,23 +202,23 @@ public:
     r |= (SPI.transfer(0) << 8);
     stream();
     return r;
-    SPI.endTransaction();
+    
   }
 
   void wr16(uint32_t addr, uint32_t v)
   {
-    SPI.beginTransaction(settingsT36);  
+      
     __end(); // stop streaming
     __wstart(addr);
     SPI.transfer(v);
     SPI.transfer(v >> 8);
     stream();
-    SPI.endTransaction();
+    
   }
 
   uint32_t rd32(uint32_t addr)
   {
-    SPI.beginTransaction(settingsT36);    
+        
     __end(); // stop streaming
     __start(addr);
     SPI.transfer(0);
@@ -230,19 +231,19 @@ public:
     b[2] = SPI.transfer(0);
     b[3] = SPI.transfer(0);
     stream();
-    SPI.endTransaction();
+    
     return c;
   }
   void rd_n(byte *dst, uint32_t addr, uint16_t n)
   {
-    SPI.beginTransaction(settingsT36);     
+         
     __end(); // stop streaming
     __start(addr);
     SPI.transfer(0);
     while (n--)
       *dst++ = SPI.transfer(0);
     stream();
-    SPI.endTransaction();
+    
   }
 #ifdef ARDUINO_AVR_UNO
   void wr_n(uint32_t addr, byte *src, uint16_t n)
@@ -268,19 +269,19 @@ public:
 #else
   void wr_n(uint32_t addr, byte *src, uint16_t n)
   {
-    SPI.beginTransaction(settingsT36);
+    
     __end(); // stop streaming
     __wstart(addr);
     while (n--)
       SPI.transfer(*src++);
     stream();
-    SPI.endTransaction();
+    
   }
 #endif
 
   void wr32(uint32_t addr, unsigned long v)
   {
-    SPI.beginTransaction(settingsT36);
+    
     __end(); // stop streaming
     __wstart(addr);
     SPI.transfer(v);
@@ -288,7 +289,7 @@ public:
     SPI.transfer(v >> 16);
     SPI.transfer(v >> 24);
     stream();
-    SPI.endTransaction();
+    
   }
 
   uint32_t getwp(void) {
@@ -305,22 +306,22 @@ public:
 
   static void __start(uint32_t addr) // start an SPI transaction to addr
   {
-    //SPI.beginTransaction(settingsT36);  
+    //  
     digitalWrite(CS, LOW);
     SPI.transfer(addr >> 16);
     SPI.transfer(highByte(addr));
     SPI.transfer(lowByte(addr));  
-    //SPI.endTransaction();
+    //
   }
 
   static void __wstart(uint32_t addr) // start an SPI write transaction to addr
   {
-    //SPI.beginTransaction(settingsT36);
+    //
     digitalWrite(CS, LOW);
     SPI.transfer(0x80 | (addr >> 16));
     SPI.transfer(highByte(addr));
     SPI.transfer(lowByte(addr));
-    //SPI.endTransaction();  
+    //  
   }
 
   static void __end() // end the SPI transaction
@@ -344,44 +345,44 @@ public:
   static unsigned int __rd16(uint32_t addr)
   {
     unsigned int r;
-    //SPI.beginTransaction(settingsT36);
+    //
 
     __start(addr);
     SPI.transfer(0);  // dummy
     r = SPI.transfer(0);
     r |= (SPI.transfer(0) << 8);
     __end();
-    //SPI.endTransaction();
+    //
     return r;
   }
 
   static void __wr16(uint32_t addr, unsigned int v)
   {
-    //SPI.beginTransaction(settingsT36);
+    //
 
     __wstart(addr);
     SPI.transfer(lowByte(v));
     SPI.transfer(highByte(v));
     __end();
-    //SPI.endTransaction();
+    //
   }
 
   static void hostcmd(byte a)
   {
-    SPI.beginTransaction(settingsT36);
+    
 
     digitalWrite(CS, LOW);
     SPI.transfer(a);
     SPI.transfer(0x00);
     SPI.transfer(0x00);
     digitalWrite(CS, HIGH);
-    SPI.endTransaction();
+    
   }
 
   void getfree(uint16_t n)
   {
     wp &= 0xfff;
-    SPI.beginTransaction(settingsT36);
+    
     __end();
     __wr16(REG_CMD_WRITE, wp & 0xffc);
     do {
@@ -389,7 +390,7 @@ public:
       freespace = (4096 - 4) - fullness;
     } while (freespace < n);
     stream();
-    SPI.endTransaction();
+    
   }
 
   byte streaming;

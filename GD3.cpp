@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "SPI.h"
-#include "SdFat.h"
+//#include "SdFat.h"
+#include <SD.h>
 #if !defined(__SAM3X8E__)
 #include "EEPROM.h"
 #endif
@@ -64,6 +65,7 @@ byte ft8xx_model;
 #include "transports/wiring.h"
 #endif
 SPISettings settingsT36(30000000, MSBFIRST, SPI_MODE0); 
+SPISettings setInicio(4000000, MSBFIRST, SPI_MODE0);
 static GDTransport GDTR;
 
 GDClass GD;
